@@ -1,0 +1,103 @@
+
+@mixin ui-button($h: 32px, $p: 10px)
+	display: inline-block
+	box-sizing: border-box
+	height: $h
+	line-height: $h - 2*$p
+	padding: $p
+	cursor: pointer
+	font-size: $h / 2 - 2px
+	&:active
+		padding: ($p + 1) $p ($p - 1) $p
+
+#ui
+	width: 100%
+	height: 100%
+	position: absolute
+	#login-form
+		position: absolute
+		top: 0px
+		left: 0px
+		right: 0px
+		height: 30px
+		#name
+			position: absolute
+			top: 0px
+			left: 0px
+			right: 100px
+			bottom: 0px
+			height: 30px
+			input
+				display: block
+				width: 100%
+				height: 30px
+		button
+			display: block
+			position: absolute
+			top: 0px
+			right: 0px
+			bottom: 0px
+			width: 100px
+			height: 30px
+	#log
+		position: absolute
+		top: 0px
+		left: 200px
+		right: 0px
+		bottom: 50px
+		background: #eee
+		padding: 5px
+		box-sizing: border-box
+		margin: 0px
+		.msg
+			.name
+				font-weight: bold
+				color: navy
+			.text
+	#users
+		position: absolute
+		top: 0px
+		left: 0px
+		bottom: 0px
+		width: 200px
+		padding: 0px
+		margin: 0px
+		border-right: 1px solid #333
+		box-sizing: border-box
+		background: #ccc
+		li
+			margin: 0px
+	#msg-form
+		position: absolute
+		left: 200px
+		right: 0px
+		bottom: 0px
+		margin: 0px
+		height: 50px
+		border-top: 1px solid #333
+		box-sizing: border-box
+		#new-msg
+			position: absolute
+			top: 0px
+			left: 0px
+			right: 100px
+			bottom: 0px
+			height: 50px
+			input
+				display: block
+				padding: 0px 10px
+				width: 100%
+				height: 50px
+				border: 0px
+				border-radius: 0px
+				background: #aaa
+				outline: none
+		button
+			display: block
+			position: absolute
+			top: 0px
+			right: 0px
+			bottom: 0px
+			width: 100px
+			height: 50px
+			border-left: 1px dashed #ccc
