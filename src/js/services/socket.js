@@ -68,7 +68,7 @@ const hook = ({state$, actions}) => {
 		state$.distinctUntilChanged(state => state.socket.username)
 			.filter(state => state.socket.username !== null)
 			.subscribe(
-				({username}) => socket.emit('join', username)
+				({socket: {username}}) => socket.emit('join', username)
 			);
 
 		state$.distinctUntilChanged(state => state.socket.messages)
@@ -79,8 +79,25 @@ const hook = ({state$, actions}) => {
 			.subscribe(message => socket.emit('message', message));
 
 		socket.on('joinSuccess', res => actions.socket.joinSuccess(res));
+
 		socket.on('joined', res => actions.socket.joined(res));
+		socket.on('joined', res => actions.users.add({
+			name: res
+		}));
+
 		socket.on('message', res => actions.socket.message(res));
+		socket.on('message', res => actions.users.data(res.username, res.message));
+
+		actions.socket.join('root');
+
+		/*
+		state$.distinctUntilChanged(state => state.messages)
+			.filter(state => state.messages.length > 0 && state.messages.slice(-1).pop().username === state.username)
+			.map(state => state.messages.slice(-1).pop())
+			.subscribe(message => socket.emit('message', message));
+		*/
+
+		// socket.on('joinSuccess', res => actions.joinSuccess(res));
 	});
 
 	state$.distinctUntilChanged(state => state.socket.mode)

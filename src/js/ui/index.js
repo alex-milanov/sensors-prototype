@@ -2,7 +2,7 @@
 
 // dom
 const {
-	h1, a, div, form, input, label,
+	h1, a, div, form, input, label, canvas,
 	section, button, span, pre, ul, li
 } = require('iblokz-snabbdom-helpers');
 // components
@@ -25,6 +25,7 @@ module.exports = ({state, actions}) => div('#ui', [].concat(
 			button('Connect')
 		])
 		: [
+			section('.view3d', state.needsRefresh === false ? canvas('#viz') : ''),
 			pre('#log', state.socket.messages
 				.map(msg =>
 					div('.msg', [

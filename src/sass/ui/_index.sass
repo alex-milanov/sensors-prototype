@@ -1,15 +1,4 @@
 
-@mixin ui-button($h: 32px, $p: 10px)
-	display: inline-block
-	box-sizing: border-box
-	height: $h
-	line-height: $h - 2*$p
-	padding: $p
-	cursor: pointer
-	font-size: $h / 2 - 2px
-	&:active
-		padding: ($p + 1) $p ($p - 1) $p
-
 #ui
 	width: 100%
 	height: 100%
@@ -39,9 +28,20 @@
 			bottom: 0px
 			width: 100px
 			height: 30px
+	.view3d
+		position: absolute
+		left: 200px
+		top: 0px
+		bottom: 250px
+		right: 0px
+		background: #000
+		#viz
+			background: #000
+			width: 100%
+			height: 100%
 	#log
 		position: absolute
-		top: 0px
+		height: 200px
 		left: 200px
 		right: 0px
 		bottom: 50px
@@ -49,6 +49,7 @@
 		padding: 5px
 		box-sizing: border-box
 		margin: 0px
+		overflow-y: scroll
 		.msg
 			.name
 				font-weight: bold

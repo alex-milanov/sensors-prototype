@@ -19,6 +19,7 @@ const state$ = new Rx.BehaviorSubject();
 // socket
 let socket = require('./services/socket');
 actions = app.attach(actions, 'socket', socket.actions);
+let viz = require('./services/viz');
 
 // hot reloading
 if (module.hot) {
@@ -33,6 +34,17 @@ if (module.hot) {
 	module.hot.accept("./ui", function() {
 		ui = require('./ui');
 		actions.stream.onNext(state => state);
+	});
+	// viz
+	module.hot.accept("./services/viz", function() {
+		console.log('updating viz');
+		viz.unhook();
+		// console.log('updating render3d');
+		viz = require('./services/viz');
+		// actions = app.attach(actions, 'rest', rest.actions);
+		// viz.hook({state$, actions});
+		actions.set('needsRefresh', true);
+		// state$.connect();
 	});
 } else {
 	actions$ = actions.stream;
@@ -53,6 +65,27 @@ actions$
 // state change hooks
 socket.hook({state$, actions});
 
+// refesh
+state$.distinctUntilChanged(state => state.needsRefresh)
+	.filter(state => state.needsRefresh)
+	.subscribe(state =>
+			actions.toggle('needsRefresh')
+	);
+
+$.interval(100).map(() => document.querySelector('#viz'))
+	.distinctUntilChanged(canvas => canvas)
+	.filter(canvas => canvas)
+	.subscribe(canvas => {
+		viz.unhook();
+		viz.hook({state$, actions, canvas});
+	});
+
 // state -> ui
 const ui$ = state$.map(state => ui({state, actions}));
 vdom.patchStream(ui$, '#ui');
+
+// livereload impl.
+if (module.hot) {
+	document.write(`<script src="http://${(location.host || 'localhost').split(':')[0]}` +
+	`:35729/livereload.js?snipver=1"></script>`);
+}
